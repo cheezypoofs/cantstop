@@ -1,7 +1,6 @@
 extends Node
 
 var space_scene = preload("res://scenes/Space.tscn")
-var gdmodel = preload("res://models/Lane.gd")
 
 var model: Lane:
 	get:
@@ -23,5 +22,5 @@ func init(lane: Lane) -> void:
 		new_scene.position = Vector2(0, 64 + (i * 64))
 		add_child(new_scene)
 
-func _process(delta):
+func _ready() -> void:
 	$Value.text = str(self.model.value)

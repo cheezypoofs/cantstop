@@ -14,9 +14,6 @@ var player: Player:
 func init(player: Player) -> Turn:
 	self.player = player
 	return self
-	
-func _ready() -> void:
-	assert(self.player != null)
 		
 func use_cone():
 	num_cones -= 1

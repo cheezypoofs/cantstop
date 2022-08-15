@@ -1,28 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://gbalqu2x6y48"]
 
-[sub_resource type="GDScript" id="GDScript_dqac3"]
-script/source = "extends Node
-
-var gdmodel = preload(\"res://models/Die.gd\")
-
-var model: Die:
-	get:
-		return model
-	
-func _ready() -> void:
-	model = gdmodel.new()
-	model.connect(\"die_rolled\", _update_value)
-	
-func _update_value() -> void:
-	# todo: eventually move to images of dice
-	if model.value == gdmodel.INVALID_VALUE:
-		$Value.text = \"\"
-	else:
-		$Value.text = str(self.model.value)
-"
+[ext_resource type="Script" path="res://scenes/Die.gd" id="1_gaiob"]
 
 [node name="Die" type="Node2D"]
-script = SubResource("GDScript_dqac3")
+script = ExtResource("1_gaiob")
 
 [node name="Value" type="Label" parent="."]
 offset_right = 40.0

@@ -18,6 +18,3 @@ func init() -> Board:
 		lane.init(n)
 		self.lanes.append(lane)	
 	return self
-
-func _ready():
-	assert(len(lanes) != 0)

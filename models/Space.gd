@@ -1,6 +1,8 @@
 extends Node
 class_name Space
 
+signal space_changed
+
 var markers = []:
 	get:
 		return markers
@@ -15,11 +17,13 @@ func init(rank: int) -> Space:
 	
 func add_marker(marker: Marker) -> void:
 	self.markers.append(marker)
+	emit_signal("space_changed")
 	
 func remove_marker(marker: Marker) -> Space:
 	for i in range(len(self._markers)):
 		if self.markers[i].player.player_name == marker.player.player_name:
 			self.markers.remove_at(i)
+			emit_signal("space_changed")
 			return self
 	return self
 	
@@ -28,6 +32,3 @@ func has_marker_for(player: Player) -> bool:
 		if m.player.player_name == player.player_name:
 			return true
 	return false
-
-func _ready():
-	assert(self.rank != -1)

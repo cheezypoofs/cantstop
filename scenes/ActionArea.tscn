@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://fgh4h5hfhbmj"]
 
-[ext_resource type="Script" path="res://scripts/ActionArea.gd" id="1_tgd8b"]
+[ext_resource type="Script" path="res://scenes/ActionArea.gd" id="1_r7oes"]
 [ext_resource type="PackedScene" uid="uid://gbalqu2x6y48" path="res://scenes/Die.tscn" id="2_bx1ov"]
 
 [node name="ActionArea" type="Node2D"]
 position = Vector2(0, 32)
-script = ExtResource("1_tgd8b")
+script = ExtResource("1_r7oes")
 
 [node name="Roll" type="Button" parent="."]
 offset_right = 8.0

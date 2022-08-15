@@ -8,6 +8,3 @@ var player: Player = null :
 func init(p: Player) -> Marker:
 	self.player = p
 	return self
-
-func _ready():
-	assert(self.player != null)

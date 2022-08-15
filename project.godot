@@ -12,7 +12,7 @@ _global_script_classes=[{
 "base": "Node",
 "class": &"ActionArea",
 "language": &"GDScript",
-"path": "res://scripts/ActionArea.gd"
+"path": "res://models/ActionArea.gd"
 }, {
 "base": "Node",
 "class": &"Board",
@@ -23,6 +23,11 @@ _global_script_classes=[{
 "class": &"Die",
 "language": &"GDScript",
 "path": "res://models/Die.gd"
+}, {
+"base": "Node2D",
+"class": &"GameState",
+"language": &"GDScript",
+"path": "res://models/GameState.gd"
 }, {
 "base": "Node",
 "class": &"Lane",
@@ -53,6 +58,7 @@ _global_script_class_icons={
 "ActionArea": "",
 "Board": "",
 "Die": "",
+"GameState": "",
 "Lane": "",
 "Marker": "",
 "Player": "",

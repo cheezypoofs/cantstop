@@ -28,6 +28,3 @@ func init(value: int) -> Lane:
 		self.spaces.append(new_space)
 
 	return self
-
-func _ready():
-	assert(self.value != 0)

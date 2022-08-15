@@ -13,7 +13,3 @@ func init(name: String, color: Color) -> Player:
 	self.player_name = name
 	self.color = color
 	return self
-
-func _ready():
-	assert(self.player_name != "")
-	assert(self.color != Color.BLACK)

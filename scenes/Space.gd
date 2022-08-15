@@ -6,13 +6,10 @@ var model: Space:
 
 func init(model: Space) -> void:
 	self.model = model
+	model.connect("space_changed", self._update)
+	self._update()
 	
-func _ready():
-	# todo: hookup listeners to changes instead of using
-	# _process?
-	assert(model != null)
-
-func _process(delta):
+func _update() -> void:
 	var markers: String
 	for m in model.markers:
 		markers += str(m.player.color)
