@@ -11,6 +11,3 @@ func init(p: Player) -> Marker:
 
 func _ready():
 	assert(self.player != null)
-
-func _process(delta):
-	pass

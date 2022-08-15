@@ -9,43 +9,61 @@
 config_version=5
 
 _global_script_classes=[{
-"base": "Node2D",
+"base": "Node",
+"class": &"ActionArea",
+"language": &"GDScript",
+"path": "res://scripts/ActionArea.gd"
+}, {
+"base": "Node",
 "class": &"Board",
 "language": &"GDScript",
-"path": "res://scripts/Board.gd"
+"path": "res://models/Board.gd"
+}, {
+"base": "Node",
+"class": &"Die",
+"language": &"GDScript",
+"path": "res://models/Die.gd"
 }, {
 "base": "Node",
 "class": &"Lane",
 "language": &"GDScript",
-"path": "res://scripts/Lane.gd"
+"path": "res://models/Lane.gd"
 }, {
 "base": "Node",
 "class": &"Marker",
 "language": &"GDScript",
-"path": "res://scripts/Marker.gd"
+"path": "res://models/Marker.gd"
 }, {
 "base": "Node",
 "class": &"Player",
 "language": &"GDScript",
-"path": "res://scripts/Player.gd"
+"path": "res://models/Player.gd"
 }, {
 "base": "Node",
 "class": &"Space",
 "language": &"GDScript",
-"path": "res://scripts/Space.gd"
+"path": "res://models/Space.gd"
+}, {
+"base": "Node",
+"class": &"Turn",
+"language": &"GDScript",
+"path": "res://models/Turn.gd"
 }]
 _global_script_class_icons={
+"ActionArea": "",
 "Board": "",
+"Die": "",
 "Lane": "",
 "Marker": "",
 "Player": "",
-"Space": ""
+"Space": "",
+"Turn": ""
 }
 
 [application]
 
 config/name="CantStop"
-run/main_scene="res://scenes/Board.tscn"
+run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.0", "Vulkan Clustered")
 config/icon="res://icon.png"
 

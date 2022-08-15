@@ -17,6 +17,3 @@ func init(name: String, color: Color) -> Player:
 func _ready():
 	assert(self.player_name != "")
 	assert(self.color != Color.BLACK)
-
-func _process(delta):
-	pass
