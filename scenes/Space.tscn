@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba6xlye3y76tq"]
+
+[ext_resource type="Script" path="res://scripts/Space.gd" id="1_w277d"]
+
+[node name="Position" type="Node2D"]
+script = ExtResource("1_w277d")
+
+[node name="Rank" type="Label" parent="."]
+offset_right = 64.0
+offset_bottom = 23.0
+
+[node name="Markers" type="Label" parent="."]
+offset_top = 24.0
+offset_right = 64.0
+offset_bottom = 47.0

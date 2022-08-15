@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgbfe4ey7eldg"]
+
+[ext_resource type="Script" path="res://scripts/Lane.gd" id="1_p5lr4"]
+[ext_resource type="Texture2D" uid="uid://bgnrhfkwnjv" path="res://icon.png" id="2_mnoag"]
+
+[node name="Lane" type="Node2D"]
+script = ExtResource("1_p5lr4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(32, 32)
+texture = ExtResource("2_mnoag")
+
+[node name="Value" type="Label" parent="."]
+offset_right = 64.0
+offset_bottom = 64.0
