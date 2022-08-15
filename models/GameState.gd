@@ -11,10 +11,9 @@ var board: Board = null:
 		
 var _current: int = -1
 
-func init(board: Board, players: Array) -> GameState:
+func _init(board: Board, players: Array):
 	self.board = board
 	self.players = players
-	return self
 	
 func next_player() -> Player:
 	assert(self.players)

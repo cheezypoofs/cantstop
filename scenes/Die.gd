@@ -10,7 +10,7 @@ var model: Die = null:
 		model = d
 		model.connect("die_rolled", _update_value)
 		self._update_value()
-	
+
 func _update_value() -> void:
 	if model.value == gdmodel.INVALID_VALUE:
 		$Value.text = ""

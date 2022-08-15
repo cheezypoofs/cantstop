@@ -11,9 +11,8 @@ var player: Player:
 	get:
 		return player
 		
-func init(player: Player) -> Turn:
+func _init(player: Player):
 	self.player = player
-	return self
 		
 func use_cone():
 	num_cones -= 1

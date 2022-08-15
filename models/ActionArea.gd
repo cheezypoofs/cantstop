@@ -7,7 +7,7 @@ var dice: Array = []:
 	get:
 		return dice
 
-func init() -> ActionArea:
+func _init():
 	var gddie = preload("res://models/Die.gd")
 	dice = [
 		gddie.new(),
@@ -15,7 +15,6 @@ func init() -> ActionArea:
 		gddie.new(),
 		gddie.new(),
 	]
-	return self
 
 var die_values: Array :
 	get:
@@ -25,7 +24,7 @@ var die_values: Array :
 			dice[2].value,
 			dice[3].value,
 		]
-		
+
 func roll() -> void:
 	dice[0].roll()
 	dice[1].roll()

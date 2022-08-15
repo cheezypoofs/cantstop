@@ -40,3 +40,24 @@ offset_top = -32.0
 offset_right = 128.0
 offset_bottom = -9.0
 text = "???"
+
+[node name="Choice0" type="Button" parent="."]
+offset_left = 144.0
+offset_top = 32.0
+offset_right = 217.0
+offset_bottom = 64.0
+text = "Choice0"
+
+[node name="Choice1" type="Button" parent="."]
+offset_left = 144.0
+offset_top = 72.0
+offset_right = 213.0
+offset_bottom = 103.0
+text = "Choice1"
+
+[node name="Choice2" type="Button" parent="."]
+offset_left = 144.0
+offset_top = 112.0
+offset_right = 213.0
+offset_bottom = 143.0
+text = "Choice2"

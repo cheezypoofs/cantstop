@@ -5,6 +5,5 @@ var player: Player = null :
 	get:
 		return player
 		
-func init(p: Player) -> Marker:
+func _init(p: Player):
 	self.player = p
-	return self

@@ -11,14 +11,13 @@ var rank: int = -1:
 	get:
 		return rank
 
-func init(rank: int) -> Space:
+func _init(rank: int):
 	self.rank = rank
-	return self
-	
+
 func add_marker(marker: Marker) -> void:
 	self.markers.append(marker)
 	emit_signal("space_changed")
-	
+
 func remove_marker(marker: Marker) -> Space:
 	for i in range(len(self._markers)):
 		if self.markers[i].player.player_name == marker.player.player_name:
@@ -26,7 +25,7 @@ func remove_marker(marker: Marker) -> Space:
 			emit_signal("space_changed")
 			return self
 	return self
-	
+
 func has_marker_for(player: Player) -> bool:
 	for m in self.markers:
 		if m.player.player_name == player.player_name:
