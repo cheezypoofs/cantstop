@@ -6,6 +6,7 @@ const gdaa = preload("res://scenes/ActionArea.gd")
 var board: Board = null
 var state: GameState = null
 var aa: ActionArea = null
+var engine: MoveEngine = null
 
 func _ready():
 	var p1: Player = load("res://models/Player.gd").new("Player 1", Color.BLUE)
@@ -14,6 +15,8 @@ func _ready():
 
 	board = load("res://models/Board.gd").new()
 	$Board.model = board
+
+	engine = load("res://models/MoveEngine.gd").new(board)
 
 	state = load("res://models/GameState.gd").new(board, [p1, p2])
 
@@ -26,12 +29,10 @@ func _ready():
 	self._to_next_player()
 
 func _to_next_player() -> void:
-	var player: Player = self.state.next_player()
+	var turn: Turn = self.state.next_turn()
 
-	$ActionArea.current_player = player
+	$ActionArea.current_player = turn.player
 	$ActionArea.prompt_roll_or_stop()
-
-	var turn: Turn = gdturn.new(player)
 
 func _player_stopped() -> void:
 	# todo: capture cones. move markers.
@@ -44,6 +45,18 @@ func _player_rolled() -> void:
 
 	var vals = aa.die_values
 
+	var moves = engine.calculate_moves(state.current_turn, aa)
+	if len(moves) == 0:
+		print_debug("must surrender")
+	else:
+		for move_set in moves:
+			print_debug("moveset...")
+			for move in [move_set.first, move_set.second]:
+				if move != null:
+					print_debug("  lane %d" % (move.lane.value))
+
+
+	return
 	$ActionArea.choices = [
 		gdaa.Choice.new(
 			vals[0] + vals[1],

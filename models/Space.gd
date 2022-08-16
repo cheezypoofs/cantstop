@@ -7,9 +7,22 @@ var markers = []:
 	get:
 		return markers
 
+var cone: Cone = null:
+	get:
+		return cone
+	set(c):
+		cone = c
+		emit_signal("space_changed")
+
 var rank: int = -1:
 	get:
 		return rank
+
+var is_top: bool = false:
+	get:
+		return is_top
+	set(it):
+		is_top = it
 
 func _init(rank: int):
 	self.rank = rank

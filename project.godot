@@ -20,6 +20,11 @@ _global_script_classes=[{
 "path": "res://models/Board.gd"
 }, {
 "base": "Node",
+"class": &"Cone",
+"language": &"GDScript",
+"path": "res://models/Cone.gd"
+}, {
+"base": "Node",
 "class": &"Die",
 "language": &"GDScript",
 "path": "res://models/Die.gd"
@@ -39,6 +44,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://models/Marker.gd"
 }, {
+"base": "Object",
+"class": &"MoveEngine",
+"language": &"GDScript",
+"path": "res://models/MoveEngine.gd"
+}, {
 "base": "Node",
 "class": &"Player",
 "language": &"GDScript",
@@ -57,10 +67,12 @@ _global_script_classes=[{
 _global_script_class_icons={
 "ActionArea": "",
 "Board": "",
+"Cone": "",
 "Die": "",
 "GameState": "",
 "Lane": "",
 "Marker": "",
+"MoveEngine": "",
 "Player": "",
 "Space": "",
 "Turn": ""
