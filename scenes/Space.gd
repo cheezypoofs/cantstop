@@ -11,6 +11,9 @@ func init(model: Space) -> void:
 
 func _update() -> void:
 	var markers: String
+
+	if model.cone != null:
+		markers += "*"
 	for m in model.markers:
 		markers += str(m.player.color)
 

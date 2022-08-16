@@ -1,6 +1,16 @@
 extends Node
 
+const gdme = preload("res://models/MoveEngine.gd")
+
 signal choice_stop
+signal move_selected
+signal move_chosen
+
+var moves = []
+
+var selected_move = null:
+	get:
+		return selected_move
 
 var model: ActionArea = null:
 	get:
@@ -17,34 +27,6 @@ var model: ActionArea = null:
 		$Dice/Die2.model = dice[2]
 		$Dice/Die3.model = dice[3]
 
-class Choice:
-	var first: int
-	var second: int
-	var legal: bool
-	var chosen: Callable
-
-	func _init(first: int, second: int, legal: bool):
-		self.first = first
-		self.second = second
-		self.legal = legal
-
-var _choice_buttons = []
-var choices: Array = [null, null, null]:
-	set(c):
-		assert(len(c) == 3)
-		choices = c
-
-		for i in range(3):
-			var choice: Choice = choices[i]
-
-			if choice == null:
-				self._choice_buttons[i].text = ""
-				self._choice_buttons[i].visible = false
-			else:
-				self._choice_buttons[i].visible = true
-				self._choice_buttons[i].text = str(choice.first) + "," + str(choice.second)
-				self._choice_buttons[i].disabled = !choice.legal
-
 var current_player: Player = null :
 	get:
 		return current_player
@@ -58,23 +40,32 @@ func _ready():
 
 	$Roll.connect("pressed", self._on_roll)
 	$Stop.connect("pressed", self._on_stop)
-
-	self._choice_buttons = [$Choice0, $Choice1, $Choice2]
-	$Choice0.connect("pressed", func(): self._on_choice(0))
-	$Choice1.connect("pressed", func(): self._on_choice(1))
-	$Choice2.connect("pressed", func(): self._on_choice(2))
-	self.choices = [null, null, null]
-
-func _on_choice(which: int) -> void:
-	self.choices[which].chosen.call()
+	$Move.connect("item_selected", self._on_move)
+	$MoveSelect.connect("pressed", self._on_move_select)
 
 func prompt_roll_or_stop():
 	$Roll.disabled = false
 	$Stop.disabled = false
 
+func _on_move(index: int) -> void:
+	if index < 0:
+		return
+
+	print_debug("move %d selected" % (index))
+	if index < len(self.moves):
+		print_debug("setting to %s"%(self.moves[index]))
+		selected_move = self.moves[index]
+	emit_signal("move_selected")
+	print_debug("selected_move=%s" % (self.selected_move))
+
+func _on_move_select() -> void:
+	print_debug("move chosen")
+	$MoveSelect.disabled = true
+	$Move.clear()
+	emit_signal("move_chosen")
+
 func _on_roll():
 	print_debug("roll clicked")
-	self.choices = [null, null, null]
 	$Roll.disabled = true
 	$Stop.disabled = true
 	model.roll()
@@ -84,3 +75,26 @@ func _on_stop():
 	$Roll.disabled = true
 	$Stop.disabled = true
 	emit_signal("choice_stop")
+
+func set_move_choices(moves: Array) -> void:
+	self.selected_move = null
+	self.moves = moves
+
+	$MoveSelect.disabled = false
+
+	if len(moves) == 0:
+		$MoveSelect.text = "surrender"
+		return
+
+	$MoveSelect.text = "go"
+	var index: int = 0
+	for move in moves:
+		var label: String
+		assert(move.first != null)
+		label = str(move.first.lane.value)
+		if move.second != null:
+			label += "," + str(move.second.lane.value)
+		$Move.add_item(label, index)
+		index += 1
+
+	self._on_move($Move.get_selected_id())

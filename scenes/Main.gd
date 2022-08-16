@@ -2,6 +2,7 @@ extends Node2D
 
 const gdturn = preload("res://models/Turn.gd")
 const gdaa = preload("res://scenes/ActionArea.gd")
+const gdme = preload("res://models/MoveEngine.gd")
 
 var board: Board = null
 var state: GameState = null
@@ -25,6 +26,8 @@ func _ready():
 	$ActionArea.model = aa
 	$ActionArea.connect("choice_stop", self._player_stopped)
 	aa.connect("dice_rolled", self._player_rolled)
+	$ActionArea.connect("move_selected", self._move_selected)
+	$ActionArea.connect("move_chosen", self._move_chosen)
 
 	self._to_next_player()
 
@@ -35,8 +38,17 @@ func _to_next_player() -> void:
 	$ActionArea.prompt_roll_or_stop()
 
 func _player_stopped() -> void:
-	# todo: capture cones. move markers.
-	# todo: advance to next player
+	print_debug("player stopped. capturing progress")
+
+	# "pickup" cones and move/place markers
+	for lane in board.lanes:
+		var space = lane.find_cone()
+		if space != null:
+			# Pickup marker of previous progress
+			if space.cone.from != null:
+				space.cone.from.remove_marker_for(state.current_turn.player)
+			space.add_marker_for(state.current_turn.player)
+			space.cone = null
 
 	self._to_next_player()
 
@@ -46,33 +58,35 @@ func _player_rolled() -> void:
 	var vals = aa.die_values
 
 	var moves = engine.calculate_moves(state.current_turn, aa)
-	if len(moves) == 0:
-		print_debug("must surrender")
+	# Even 0 legal moves, which requires a surrender, will
+	# come back as a null selection
+	$ActionArea.set_move_choices(moves)
+
+func _move_selected() -> void:
+	print_debug("todo: highlight the selected move on the board")
+
+func _move_chosen() -> void:
+	var move = $ActionArea.selected_move
+	if move == null:
+		print_debug("player must surrender")
+		# Collect all cones
+		for lane in board.lanes:
+			var space = lane.find_cone()
+			if space != null:
+				space.cone = null
+		self._to_next_player()
+		return
+
+	self._execute_move(move.first)
+	if move.second != null:
+		self._execute_move(move.second)
+
+	$ActionArea.prompt_roll_or_stop()
+
+func _execute_move(move) -> void:
+	if move.from != null:
+		move.from.cone = null
 	else:
-		for move_set in moves:
-			print_debug("moveset...")
-			for move in [move_set.first, move_set.second]:
-				if move != null:
-					print_debug("  lane %d" % (move.lane.value))
+		state.current_turn.use_cone()
 
-
-	return
-	$ActionArea.choices = [
-		gdaa.Choice.new(
-			vals[0] + vals[1],
-			vals[2] + vals[3],
-			true,
-		),
-		gdaa.Choice.new(
-			vals[0] + vals[2],
-			vals[1] + vals[3],
-			true,
-		),
-		gdaa.Choice.new(
-			vals[0] + vals[3],
-			vals[1] + vals[2],
-			true,
-		),
-	]
-
-	# todo: all the things
+	move.to.cone = move.cone
