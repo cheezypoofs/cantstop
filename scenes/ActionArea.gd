@@ -1,7 +1,5 @@
 extends Node
 
-const gdme = preload("res://models/MoveEngine.gd")
-
 signal choice_stop
 signal move_selected
 signal move_chosen
@@ -38,10 +36,6 @@ var current_turn: Turn = null:
 
 func _cones_used() -> void:
 	$Cones.text = "Cones: " + str(current_turn.num_cones)
-
-var current_player: Player:
-	get:
-		return current_turn.player
 
 func _ready():
 	$Roll.disabled = true

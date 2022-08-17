@@ -14,5 +14,5 @@ func lane_for_value(v: int) -> Lane:
 
 func _init():
 	for n in range(LANE_MIN, LANE_MAX+1):
-		var lane: Lane = load("res://models/Lane.gd").new(n)
+		var lane := Lane.new(n)
 		lanes.append(lane)

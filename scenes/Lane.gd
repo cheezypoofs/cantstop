@@ -1,12 +1,12 @@
 extends Node
 
-var space_scene = preload("res://scenes/Space.tscn")
-
 var model: Lane:
 	get:
 		return model
 
 func init(lane: Lane) -> void:
+	var space_scene = load("res://scenes/Space.tscn")
+
 	self.model = lane
 
 	var scenes = []

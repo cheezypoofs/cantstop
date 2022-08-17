@@ -1,8 +1,6 @@
 extends Object
 class_name MoveEngine
 
-const gdcone = preload("res://models/Cone.gd")
-
 var _board: Board = null
 
 func _calculate_move(val: int, turn: Turn, num_moves: int) -> Move:
@@ -33,7 +31,7 @@ func _calculate_move(val: int, turn: Turn, num_moves: int) -> Move:
 
 		# Always allocate a cone. The caller will decide
 		# if the player has enough.
-		var cone: Cone = Cone.new(turn.player, space)
+		var cone := Cone.new(turn.player, space)
 
 		# Advance space to the 0th or next rank
 		if space == null:

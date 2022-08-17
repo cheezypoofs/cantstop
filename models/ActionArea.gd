@@ -8,12 +8,11 @@ var dice: Array = []:
 		return dice
 
 func _init():
-	var gddie = preload("res://models/Die.gd")
 	dice = [
-		gddie.new(),
-		gddie.new(),
-		gddie.new(),
-		gddie.new(),
+		Die.new(),
+		Die.new(),
+		Die.new(),
+		Die.new(),
 	]
 
 var die_values: Array :

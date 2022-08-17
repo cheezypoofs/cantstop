@@ -1,9 +1,5 @@
 extends Node2D
 
-const gdturn = preload("res://models/Turn.gd")
-const gdaa = preload("res://scenes/ActionArea.gd")
-const gdme = preload("res://models/MoveEngine.gd")
-
 var board: Board = null
 var state: GameState = null
 var aa: ActionArea = null
@@ -12,18 +8,17 @@ var engine: MoveEngine = null
 signal lane_captured
 
 func _ready():
-	var p1: Player = load("res://models/Player.gd").new("Player 1", Color.BLUE)
+	var p1: Player = Player.new("Player 1", Color.BLUE)
+	var p2: Player = Player.new("Player 2", Color.GREEN)
 
-	var p2: Player = load("res://models/Player.gd").new("Player 2", Color.GREEN)
-
-	board = load("res://models/Board.gd").new()
+	board = Board.new()
 	$Board.model = board
 
-	engine = load("res://models/MoveEngine.gd").new(board)
+	engine = MoveEngine.new(board)
 
-	state = load("res://models/GameState.gd").new(board, [p1, p2])
+	state = GameState.new(board, [p1, p2])
 
-	aa = load("res://models/ActionArea.gd").new()
+	aa = ActionArea.new()
 
 	$ActionArea.model = aa
 	$ActionArea.connect("choice_stop", self._player_stopped)
@@ -59,10 +54,6 @@ func _player_stopped() -> void:
 	self._to_next_player()
 
 func _player_rolled() -> void:
-	print("dice=", aa.die_values)
-
-	var vals = aa.die_values
-
 	var moves = engine.calculate_moves(state.current_turn, aa)
 	# Even 0 legal moves, which requires a surrender, will
 	# come back as a null selection

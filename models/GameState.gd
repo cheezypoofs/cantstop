@@ -1,8 +1,6 @@
 extends Node2D
 class_name GameState
 
-const gdturn = preload("res://models/Turn.gd")
-
 var players = []:
 	get:
 		return players
@@ -26,7 +24,7 @@ func next_turn() -> Turn:
 	_current += 1
 	if _current >= len(players):
 		_current = 0
-	current_turn = gdturn.new(players[_current])
+	current_turn = Turn.new(players[_current])
 	return current_turn
 
 func next_player() -> Player:

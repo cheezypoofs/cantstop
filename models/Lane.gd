@@ -1,8 +1,6 @@
 extends Node
 class_name Lane
 
-var gdspace = preload("res://models/Space.gd")
-
 var value: int = 0:
 	get:
 		return value
@@ -44,7 +42,7 @@ func _init(value: int):
 
 	# Create the Space instances
 	for i in range(num):
-		var new_space: Space = gdspace.new(i)
+		var new_space := Space.new(i)
 		if i == (num-1):
 			new_space.is_top = true
 		self.spaces.append(new_space)
