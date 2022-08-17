@@ -1,5 +1,6 @@
 extends Node
 class_name Player
+# Player holds information about the player.
 
 var player_name: String :
 	get:

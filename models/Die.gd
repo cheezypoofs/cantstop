@@ -1,7 +1,8 @@
 extends Node
 class_name Die
+# Die is a die. derp.
 
-signal die_rolled
+signal die_rolled(value: int)
 
 const MIN_VALUE: int = 1
 const MAX_VALUE: int = 6
@@ -13,4 +14,4 @@ var value: int = INVALID_VALUE:
 
 func roll() -> void:
 	value = randi_range(MIN_VALUE, MAX_VALUE)
-	emit_signal("die_rolled")
+	emit_signal("die_rolled", value)

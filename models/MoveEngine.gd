@@ -1,17 +1,26 @@
 extends Object
 class_name MoveEngine
+# MoveEngine is the logic that computes legal moves
+# on the game board. It can also annotate and rank
+# those moves for NPCs or providing game hints to
+# a player.
 
 var _board: Board = null
 
+func _init(board: Board):
+	_board = board
+
+# _calculate_move is used internally to see what
+# Move can be made in the Lane in this Turn.
 func _calculate_move(val: int, turn: Turn, num_moves: int) -> Move:
 	var lane: Lane = _board.lane_for_value(val)
-
-	var move: Move = Move.new()
-	move.lane = lane
 
 	if lane.winner != null:
 		print("%s already owns lane %d" % [lane.winner.player_name, lane.value])
 		return null
+
+	var move: Move = Move.new()
+	move.lane = lane
 
 	# Let's see if we have a cone already on this lane.
 	var space: Space = lane.find_cone()
@@ -46,15 +55,20 @@ func _calculate_move(val: int, turn: Turn, num_moves: int) -> Move:
 	assert(move.to != null)
 	assert(move.cone != null)
 
-	# Allow advancing two if we wouldn't overrun
+	# Allow advancing two if we can
 	if num_moves == 2 && !move.to.is_top:
 		move.to = lane.spaces[move.to.rank + 1]
 
 	return move
 
-func _init(board: Board):
-	_board = board
-
+# calculate_moves returns a []MoveSet that represents
+# the legal moves a player may make. It looks at all
+# combinations of the current dice in the ActionArea
+# and de-dupes MoveSet's that are the same. Moves that
+# require cones will be removed if the Turn lacks sufficient
+# cones to execute.
+# An empty array will be returned if there are no legal
+# moves, which indicates the player must surrender the turn.
 func calculate_moves(turn: Turn, aa: ActionArea) -> Array:
 
 	# Consider each of the 6 combinations of dice values.
@@ -84,6 +98,9 @@ func calculate_moves(turn: Turn, aa: ActionArea) -> Array:
 
 		var num_moves: int = 1
 		if first == second:
+			# for example, user has two 7's.
+			# we will attempt to see if we can move two
+			# in that Lane.
 			num_moves = 2
 
 		var first_move: Move = _calculate_move(first, turn, num_moves)
@@ -96,6 +113,8 @@ func calculate_moves(turn: Turn, aa: ActionArea) -> Array:
 		if first != second:
 			second_move = _calculate_move(second, turn, 1)
 
+		# Eliminate moves that require more cones than
+		# we have.
 		if first_move.new_cone():
 			if turn.num_cones == 0:
 				# This move set is invalid

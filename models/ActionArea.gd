@@ -1,5 +1,7 @@
 extends Node
 class_name ActionArea
+# ActionArea holds models that are action happens, like
+# dice rolls.
 
 signal dice_rolled
 

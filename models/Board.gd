@@ -1,5 +1,6 @@
 extends Node
 class_name Board
+# Board holds the playable Lane's of the gameboard.
 
 const LANE_MIN = 2
 const LANE_MAX = 12

@@ -5,26 +5,34 @@ var state: GameState = null
 var aa: ActionArea = null
 var engine: MoveEngine = null
 
-signal lane_captured
+signal game_winner(player: Player)
+
+func _init() -> void:
+	board = Board.new()
+	aa = ActionArea.new()
+	engine = MoveEngine.new(board)
 
 func _ready():
+	# todo: players can come in on initialization of the
+	# scene.
+	# todo: This is where we can also provide a class
+	# that listens to the state changes and makes choices
+	# so we can have NPCs.
 	var p1: Player = Player.new("Player 1", Color.BLUE)
 	var p2: Player = Player.new("Player 2", Color.GREEN)
 
-	board = Board.new()
-	$Board.model = board
-
-	engine = MoveEngine.new(board)
-
 	state = GameState.new(board, [p1, p2])
 
-	aa = ActionArea.new()
-
+	$Board.model = board
 	$ActionArea.model = aa
+
+	# Setup player decisions
 	$ActionArea.connect("choice_stop", self._player_stopped)
-	aa.connect("dice_rolled", self._player_rolled)
 	$ActionArea.connect("move_selected", self._move_selected)
 	$ActionArea.connect("move_chosen", self._move_chosen)
+
+	# Hook to completion of a dice roll
+	aa.connect("dice_rolled", self._player_rolled)
 
 	self._to_next_player()
 
@@ -49,9 +57,18 @@ func _player_stopped() -> void:
 
 			if space.is_top:
 				lane.clear_losers()
-				emit_signal("lane_captured")
+				_on_lane_captured(lane.owner)
 
 	self._to_next_player()
+
+func _on_lane_captured(player: Player) -> void:
+	var total: int = 0
+	for lane in board.lanes:
+		if lane.owner != null && lane.owner.color == player.color:
+			total += 1
+	if total == 3:
+		print("%s is the winner" % [player.player_name])
+		emit_signal("game_winner", player)
 
 func _player_rolled() -> void:
 	var moves = engine.calculate_moves(state.current_turn, aa)
@@ -82,8 +99,11 @@ func _move_chosen() -> void:
 
 func _execute_move(move) -> void:
 	if move.from != null:
+		# Remove cone from old space
 		move.from.cone = null
 	else:
+		# Subtract a cone from the player's stash
 		state.current_turn.use_cone()
 
+	# Place the cone
 	move.to.cone = move.cone

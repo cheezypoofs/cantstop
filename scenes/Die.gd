@@ -7,10 +7,10 @@ var model: Die = null:
 		assert(model == null)
 		model = d
 		model.connect("die_rolled", _update_value)
-		self._update_value()
+		self._update_value(Die.INVALID_VALUE)
 
-func _update_value() -> void:
-	if model.value == Die.INVALID_VALUE:
+func _update_value(v: int) -> void:
+	if v == Die.INVALID_VALUE:
 		$Value.text = ""
 	else:
-		$Value.text = str(self.model.value)
+		$Value.text = str(v)
