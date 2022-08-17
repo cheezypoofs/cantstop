@@ -7,9 +7,10 @@ class_name Space
 # added or removed.
 signal space_changed
 
+var _markers = {}
 var markers = []:
 	get:
-		return markers
+		return _markers.values()
 
 var cone: Cone = null:
 	get:
@@ -36,28 +37,22 @@ func _init(rank: int):
 
 # remove_all clears all pieces from the Space.
 func remove_all() -> void:
-	if len(markers) != 0:
-		markers = []
+	if len(_markers) != 0:
+		_markers = {}
 		emit_signal("space_changed")
 
 # add_marker_for adds a new Player Marker to the Space.
 func add_marker_for(player: Player) -> void:
-	markers.append(Marker.new(player))
+	_markers[player.color] = Marker.new(player)
 	emit_signal("space_changed")
 
 # remove_marker_for removes an existing Player's Marker
 # from the Space.
 func remove_marker_for(player: Player) -> void:
-	for i in range(len(markers)):
-		if markers[i].player.player_name == player.player_name:
-			markers.remove_at(i)
-			emit_signal("space_changed")
-			return
+	if _markers.erase(player.color):
+		emit_signal("space_changed")
 
 # has_marker_for checks if the Player occupies the current
 # Space.
 func has_marker_for(player: Player) -> bool:
-	for m in markers:
-		if m.player.player_name == player.player_name:
-			return true
-	return false
+	return _markers.has(player.color)
