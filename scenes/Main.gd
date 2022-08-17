@@ -9,6 +9,8 @@ var state: GameState = null
 var aa: ActionArea = null
 var engine: MoveEngine = null
 
+signal lane_captured
+
 func _ready():
 	var p1: Player = load("res://models/Player.gd").new("Player 1", Color.BLUE)
 
@@ -34,11 +36,11 @@ func _ready():
 func _to_next_player() -> void:
 	var turn: Turn = self.state.next_turn()
 
-	$ActionArea.current_player = turn.player
+	$ActionArea.current_turn = turn
 	$ActionArea.prompt_roll_or_stop()
 
 func _player_stopped() -> void:
-	print_debug("player stopped. capturing progress")
+	print("player stopped. capturing progress")
 
 	# "pickup" cones and move/place markers
 	for lane in board.lanes:
@@ -50,10 +52,14 @@ func _player_stopped() -> void:
 			space.add_marker_for(state.current_turn.player)
 			space.cone = null
 
+			if space.is_top:
+				lane.clear_losers()
+				emit_signal("lane_captured")
+
 	self._to_next_player()
 
 func _player_rolled() -> void:
-	print_debug("dice=", aa.die_values)
+	print("dice=", aa.die_values)
 
 	var vals = aa.die_values
 
@@ -63,12 +69,12 @@ func _player_rolled() -> void:
 	$ActionArea.set_move_choices(moves)
 
 func _move_selected() -> void:
-	print_debug("todo: highlight the selected move on the board")
+	print("todo: highlight the selected move on the board")
 
 func _move_chosen() -> void:
 	var move = $ActionArea.selected_move
 	if move == null:
-		print_debug("player must surrender")
+		print("player must surrender")
 		# Collect all cones
 		for lane in board.lanes:
 			var space = lane.find_cone()

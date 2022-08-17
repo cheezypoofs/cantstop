@@ -1,5 +1,7 @@
 extends Node
 
+const marker_scene = preload("res://scenes/Marker.tscn")
+
 var model: Space:
 	get:
 		return model
@@ -10,12 +12,17 @@ func init(model: Space) -> void:
 	self._update()
 
 func _update() -> void:
-	var markers: String
+	for child in $Markers.get_children():
+		$Markers.remove_child(child)
 
 	if model.cone != null:
-		markers += "*"
-	for m in model.markers:
-		markers += str(m.player.color)
+		var ms = marker_scene.instantiate()
+		ms.color = Color.WHITE
+		$Markers.add_child(ms)
+
+	for marker in model.markers:
+		var ms = marker_scene.instantiate()
+		ms.color = marker.player.color
+		$Markers.add_child(ms)
 
 	$Rank.text = "R: " + str(self.model.rank)
-	$Markers.text = "M: " + markers

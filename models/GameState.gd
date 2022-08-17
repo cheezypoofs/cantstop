@@ -22,7 +22,7 @@ func _init(board: Board, players: Array):
 	self.players = players
 
 func next_turn() -> Turn:
-	assert(self.players)
+	assert(players)
 	_current += 1
 	if _current >= len(players):
 		_current = 0
@@ -30,7 +30,7 @@ func next_turn() -> Turn:
 	return current_turn
 
 func next_player() -> Player:
-	assert(self.players)
+	assert(players)
 	_current += 1
 	if _current >= len(players):
 		_current = 0

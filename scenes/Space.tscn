@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://scenes/Space.gd" id="1_bsvqs"]
 
-[node name="Position" type="Node2D"]
+[node name="Space" type="Node2D"]
 script = ExtResource("1_bsvqs")
 
 [node name="Rank" type="Label" parent="."]
 offset_right = 64.0
 offset_bottom = 23.0
 
-[node name="Markers" type="Label" parent="."]
-offset_top = 24.0
+[node name="Markers" type="HFlowContainer" parent="."]
+offset_top = 16.0
 offset_right = 64.0
-offset_bottom = 47.0
+offset_bottom = 32.0

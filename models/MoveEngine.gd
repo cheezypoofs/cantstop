@@ -13,23 +13,23 @@ class Move:
 	var cone: Cone
 
 	func new_cone() -> bool:
-		return self.from == null
+		return from == null
 
 class MoveSet:
 	var first: Move
 	var second: Move
 
 	func unique_key() -> int:
-		assert(self.first != null)
+		assert(first != null)
 		# A MoveSet is considered equal to another
 		# if the effective move result is the same.
 		# This happens if cones are not exhausted and
 		# the lanes are the same.
-		var low: Move = self.first
-		var high: Move = self.second
+		var low: Move = first
+		var high: Move = second
 		if high != null && low.lane.value > high.lane.value:
-			low = self.second
-			high = self.first
+			low = second
+			high = first
 
 		var key: int = (low.lane.value << 8)
 		if low.new_cone():
@@ -51,14 +51,14 @@ func _calculate_move(val: int, turn: Turn, num_moves: int) -> Move:
 	move.lane = lane
 
 	if lane.winner != null:
-		print_debug("%s already owns lane %d" % [lane.winner.player_name, lane.value])
+		print("%s already owns lane %d" % [lane.winner.player_name, lane.value])
 		return null
 
 	# Let's see if we have a cone already on this lane.
 	var space: Space = lane.find_cone()
 	if space != null:
 		if space.is_top:
-			print_debug("lane %d already has a cone at the top" % [lane.value])
+			print("lane %d already has a cone at the top" % [lane.value])
 			return null
 
 		# Moving the exsting cone from its current space
@@ -94,7 +94,7 @@ func _calculate_move(val: int, turn: Turn, num_moves: int) -> Move:
 	return move
 
 func _init(board: Board):
-	self._board = board
+	_board = board
 
 func calculate_moves(turn: Turn, aa: ActionArea) -> Array:
 
@@ -121,13 +121,17 @@ func calculate_moves(turn: Turn, aa: ActionArea) -> Array:
 		var first = mp[0]
 		var second = mp[1]
 
-		print_debug("considering move %d,%d" % [first, second])
+		print("considering move %d,%d" % [first, second])
 
 		var num_moves: int = 1
 		if first == second:
 			num_moves = 2
 
 		var first_move: Move = _calculate_move(first, turn, num_moves)
+		if first_move == null:
+			print("first move is not possible")
+			continue
+
 		var second_move: Move = null
 
 		if first != second:
@@ -136,16 +140,16 @@ func calculate_moves(turn: Turn, aa: ActionArea) -> Array:
 		if first_move.new_cone():
 			if turn.num_cones == 0:
 				# This move set is invalid
-				print_debug("first move requires a cone but player has none")
+				print("first move requires a cone but player has none")
 				continue
 
 			if second_move != null && second_move.new_cone() && turn.num_cones == 1:
 				# First move is OK, but second isn't.
-				print_debug("second remove requires cone but player has only one")
+				print("second remove requires cone but player has only one")
 				second_move = null
 		elif second_move != null && second_move.new_cone() && turn.num_cones == 0:
 			# First move is OK, but second isn't.
-			print_debug("second remove requires cone but player has none")
+			print("second remove requires cone but player has none")
 			second_move = null
 
 		var ms := MoveSet.new()

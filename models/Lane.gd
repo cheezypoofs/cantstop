@@ -17,6 +17,11 @@ func player_space(player: Player) -> Space:
 			return space
 	return null
 
+func clear_losers() -> void:
+	for space in spaces:
+		if !space.is_top:
+			space.remove_all()
+
 func find_cone() -> Space:
 	for space in self.spaces:
 		if space.cone != null:

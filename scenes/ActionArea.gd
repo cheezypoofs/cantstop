@@ -27,21 +27,30 @@ var model: ActionArea = null:
 		$Dice/Die2.model = dice[2]
 		$Dice/Die3.model = dice[3]
 
-var current_player: Player = null :
+var current_turn: Turn = null:
 	get:
-		return current_player
-	set(p):
-		current_player = p
-		$Player.text = p.player_name
+		return current_turn
+	set(t):
+		t.connect("pieces_used", _cones_used)
+		current_turn = t
+		$Player.text = current_turn.player.player_name
+		_cones_used()
+
+func _cones_used() -> void:
+	$Cones.text = "Cones: " + str(current_turn.num_cones)
+
+var current_player: Player:
+	get:
+		return current_turn.player
 
 func _ready():
 	$Roll.disabled = true
 	$Stop.disabled = true
 
-	$Roll.connect("pressed", self._on_roll)
-	$Stop.connect("pressed", self._on_stop)
-	$Move.connect("item_selected", self._on_move)
-	$MoveSelect.connect("pressed", self._on_move_select)
+	$Roll.connect("pressed", _on_roll)
+	$Stop.connect("pressed", _on_stop)
+	$Move.connect("item_selected", _on_move)
+	$MoveSelect.connect("pressed", _on_move_select)
 
 func prompt_roll_or_stop():
 	$Roll.disabled = false
@@ -51,33 +60,33 @@ func _on_move(index: int) -> void:
 	if index < 0:
 		return
 
-	print_debug("move %d selected" % (index))
-	if index < len(self.moves):
-		print_debug("setting to %s"%(self.moves[index]))
+	print("move %d selected" % (index))
+	if index < len(moves):
+		print("setting to %s"%(moves[index]))
 		selected_move = self.moves[index]
 	emit_signal("move_selected")
-	print_debug("selected_move=%s" % (self.selected_move))
+	print("selected_move=%s" % (selected_move))
 
 func _on_move_select() -> void:
-	print_debug("move chosen")
+	print("move chosen")
 	$MoveSelect.disabled = true
 	$Move.clear()
 	emit_signal("move_chosen")
 
 func _on_roll():
-	print_debug("roll clicked")
+	print("roll clicked")
 	$Roll.disabled = true
 	$Stop.disabled = true
 	model.roll()
 
 func _on_stop():
-	print_debug("stop clicked")
+	print("stop clicked")
 	$Roll.disabled = true
 	$Stop.disabled = true
 	emit_signal("choice_stop")
 
 func set_move_choices(moves: Array) -> void:
-	self.selected_move = null
+	selected_move = null
 	self.moves = moves
 
 	$MoveSelect.disabled = false
@@ -97,4 +106,4 @@ func set_move_choices(moves: Array) -> void:
 		$Move.add_item(label, index)
 		index += 1
 
-	self._on_move($Move.get_selected_id())
+	_on_move($Move.get_selected_id())

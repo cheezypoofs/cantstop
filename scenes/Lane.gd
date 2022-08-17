@@ -19,7 +19,7 @@ func init(lane: Lane) -> void:
 		var space_model: Space = spaces[num_spaces-i-1]
 		var new_scene = space_scene.instantiate()
 		new_scene.init(space_model)
-		new_scene.position = Vector2(0, 64 + (i * 64))
+		new_scene.position = Vector2(0, (i+1)*50)
 		add_child(new_scene)
 
 func _ready() -> void:

@@ -27,6 +27,11 @@ var is_top: bool = false:
 func _init(rank: int):
 	self.rank = rank
 
+func remove_all() -> void:
+	if len(markers) != 0:
+		markers = []
+		emit_signal("space_changed")
+
 func add_marker_for(player: Player) -> void:
 	markers.append(Marker.new(player))
 	emit_signal("space_changed")
@@ -34,7 +39,7 @@ func add_marker_for(player: Player) -> void:
 func remove_marker_for(player: Player) -> void:
 	for i in range(len(markers)):
 		if markers[i].player.player_name == player.player_name:
-			self.markers.remove_at(i)
+			markers.remove_at(i)
 			emit_signal("space_changed")
 			return
 
