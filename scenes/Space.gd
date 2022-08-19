@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 const marker_scene = preload("res://scenes/Marker.tscn")
 
@@ -16,13 +16,19 @@ func _update() -> void:
 		$Markers.remove_child(child)
 
 	if model.cone != null:
-		var ms = marker_scene.instantiate()
-		ms.color = Color.WHITE
-		$Markers.add_child(ms)
+		$Cone.visible=true
+	else:
+		$Cone.visible=false
 
-	for marker in model.markers:
-		var ms = marker_scene.instantiate()
-		ms.color = marker.player.color
-		$Markers.add_child(ms)
+	if model.is_top:
+		if len(model.markers) != 0:
+			# Kind of a hack. Steal the cone slot and own it.
+			$Cone.visible = true
+			$Cone.color = model.markers[0].player.color
+	else:
+		for marker in model.markers:
+			var ms = marker_scene.instantiate()
+			ms.color = marker.player.color
+			$Markers.add_child(ms)
 
 	$Rank.text = "R: " + str(self.model.rank)

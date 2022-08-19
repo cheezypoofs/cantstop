@@ -2,3 +2,5 @@
 
 [node name="Marker" type="ColorRect"]
 custom_minimum_size = Vector2(10, 10)
+offset_right = 16.0
+offset_bottom = 16.0

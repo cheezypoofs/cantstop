@@ -20,8 +20,9 @@ func _ready():
 	# so we can have NPCs.
 	var p1: Player = Player.new("Player 1", Color.BLUE)
 	var p2: Player = Player.new("Player 2", Color.GREEN)
+	var p3: Player = Player.new("Player 3", Color.ORANGE)
 
-	state = GameState.new(board, [p1, p2])
+	state = GameState.new(board, [p1, p2, p3])
 
 	$Board.model = board
 	$ActionArea.model = aa
@@ -37,7 +38,7 @@ func _ready():
 	self._to_next_player()
 
 func _to_next_player() -> void:
-	var turn: Turn = self.state.next_turn()
+	var turn: Turn = state.next_turn()
 
 	$ActionArea.current_turn = turn
 	$ActionArea.prompt_roll_or_stop()
@@ -57,7 +58,7 @@ func _player_stopped() -> void:
 
 			if space.is_top:
 				lane.clear_losers()
-				_on_lane_captured(lane.owner)
+				self._on_lane_captured(lane.owner)
 
 	self._to_next_player()
 

@@ -17,5 +17,5 @@ var model: Board:
 		for n in range(num_lanes):
 			var new_lane = lane_scene.instantiate()
 			new_lane.init(lanes[n])
-			new_lane.position = Vector2(n * 64, 0)
+			new_lane.position = Vector2(64 + (n * 48), 0)
 			add_child(new_lane)
